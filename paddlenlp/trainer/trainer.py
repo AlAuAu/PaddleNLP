@@ -2526,6 +2526,9 @@ class Trainer:
         if self.args.pipeline_parallel_degree > 1:
             return self.training_pipeline_step(model, inputs)
 
+        if hasattr(model, "_prepare_non_pp"):
+            model._prepare_non_pp(inputs)
+
         model.train()
         inputs = self._prepare_inputs(inputs)
         with self.autocast_smart_context_manager():
